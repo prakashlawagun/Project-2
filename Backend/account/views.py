@@ -1,4 +1,8 @@
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.shortcuts import render
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+
 from account.models import User
 from rest_framework.response import Response
 from account.serializers import UserRegistrationSerializer,SendPasswordResetEmailSerializer, UserChangePasswordSerializer, UserProfileSerializer, \
@@ -29,10 +33,22 @@ class UserRegistrationView(APIView):
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
+            # Welcome email
             data = {
                 'subject':'Welcome to Meal Time',
                 'body':f'Hello {user.username},Thank you for register in Meal Time',
                 'to_email':user.email
+            }
+            Util.send_email(data)
+            # verify email
+            uid = urlsafe_base64_encode(force_bytes(user.id))
+            token = PasswordResetTokenGenerator().make_token(user)
+            link = 'http://localhost:3000/api/user/reset/' + uid + '/' + token
+            body = 'Click Following Link to verify your email ' + link
+            data = {
+                'subject': 'Verify your email',
+                'body': body,
+                'to_email': user.email
             }
             Util.send_email(data)
             token = get_tokens_for_user(user)
