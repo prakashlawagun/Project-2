@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from account.utils import  Util
 
 
 # Create your views here.
@@ -28,6 +29,12 @@ class UserRegistrationView(APIView):
         serializer = UserRegistrationSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.save()
+            data = {
+                'subject':'Welcome to Meal Time',
+                'body':f'Hello {user.username},Thank you for register in Meal Time',
+                'to_email':user.email
+            }
+            Util.send_email(data)
             token = get_tokens_for_user(user)
             return Response({'token': token, 'msg': 'Registration Successful'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
