@@ -6,4 +6,5 @@ router = DefaultRouter()
 router.register('notify',views.SendUserNotification)
 urlpatterns = [
   path('',include(router.urls)),
+  path('status/<int:pk>/',views.ChangeStatusView.as_view(),name="status")
 ]
