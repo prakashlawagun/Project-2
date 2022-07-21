@@ -2,18 +2,20 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.shortcuts import render
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from rest_framework.throttling import ScopedRateThrottle
 
 from account.models import User
 from rest_framework.response import Response
-from account.serializers import UserRegistrationSerializer,SendPasswordResetEmailSerializer, UserChangePasswordSerializer, UserProfileSerializer, \
-    UserLoginSerializer,UserPasswordResetSerializer
+from account.serializers import UserRegistrationSerializer, SendPasswordResetEmailSerializer, \
+    UserChangePasswordSerializer, UserProfileSerializer, \
+    UserLoginSerializer, UserPasswordResetSerializer
 from account.renderers import UserRenderer
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from account.utils import  Util
+from account.utils import Util
 
 
 # Create your views here.
@@ -35,9 +37,9 @@ class UserRegistrationView(APIView):
             user = serializer.save()
             # Welcome email
             data = {
-                'subject':'Welcome to Meal Time',
-                'body':f'Hello {user.username},Thank you for register in Meal Time',
-                'to_email':user.email
+                'subject': 'Welcome to Meal Time',
+                'body': f'Hello {user.username},Thank you for register in Meal Time',
+                'to_email': user.email
             }
             Util.send_email(data)
             # verify email
@@ -75,6 +77,18 @@ class UserLoginView(APIView):
         return Response({'msg': 'Login Success'}, status=status.HTTP_201_CREATED)
 
 
+class UserLogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        response = Response()
+        response.delete_cookie('jwt')
+        response.data = {
+            'msg': 'logout'
+        }
+        return response
+
+
 class UserProfileView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
@@ -87,6 +101,8 @@ class UserProfileView(APIView):
 class UserChangePasswordView(APIView):
     renderer_classes = [UserRenderer]
     permission_classes = [IsAuthenticated]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'stop'
 
     def post(self, request, format=None):
         serializer = UserChangePasswordSerializer(data=request.data, context={'user': request.user})
@@ -101,15 +117,15 @@ class SendPasswordResetEmailView(APIView):
     def post(self, request, format=None):
         serializer = SendPasswordResetEmailSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            return  Response({'msg':'Password Reset Link send.Please check your Email'},status=status.HTTP_200_OK)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response({'msg': 'Password Reset Link send.Please check your Email'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserPasswordResetView(APIView):
     renderer_classes = [UserRenderer]
 
-    def post(self,request,uid,token, format=None):
-        serializer = UserPasswordResetSerializer(data=request.data,context={'uid':uid,'token':token})
+    def post(self, request, uid, token, format=None):
+        serializer = UserPasswordResetSerializer(data=request.data, context={'uid': uid, 'token': token})
         if serializer.is_valid(raise_exception=True):
-            return Response({'msg':'Password Reset Successfully'},status=status.HTTP_200_OK)
-        return  Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response({'msg': 'Password Reset Successfully'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
