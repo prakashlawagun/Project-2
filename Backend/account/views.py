@@ -84,7 +84,7 @@ class UserLogoutView(APIView):
         response = Response()
         response.delete_cookie('jwt')
         response.data = {
-            'msg': 'logout'
+            'msg': 'logout sucessfully'
         }
         return response
 

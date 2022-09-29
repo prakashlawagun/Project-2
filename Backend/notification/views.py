@@ -22,7 +22,7 @@ class ChangeStatusView(APIView):
         serializer = UserNotificationSerializer(notify,data=request.data)
         if serializer.is_valid(raise_exception=True):
             if notify.user == request.user:
-                notify.seen_by  =True
+                notify.seen_by = True
                 notify.save()
             return Response({'msg':'Done'},status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
