@@ -32,16 +32,20 @@ def correct_price(sender, **kwargs):
     cart_items = kwargs['instance']
     price_of_product = MenuItem.objects.get(id=cart_items.product.id)
     cart_items.price = cart_items.quantity * float(price_of_product.price)
-    # total_cart_items = CartItems.objects.filter(user=cart_items.user)
-    # cart = Cart.objects.get(id=cart_items.cart.id)
-    # cart.total_price = cart_items.price
-    # cart.save()
+    total_cart_items = CartItems.objects.filter(user=cart_items.user)
+    cart = Cart.objects.get(id=cart_items.cart.id)
+    cart.total_price = cart_items.price
+    cart.save()
 
 
 @receiver(post_delete, sender=CartItems)
 def total_price(sender, **kwargs):
     cart_item = kwargs['instance']
     cart = Cart.objects.get(id=cart_item.cart.id)
-    cart.total_price -= cart_item.price
+    if cart.total_price!=0:
+        cart.total_price -= cart_item.price
+    else:
+        cart.total_price=0
+
     cart.save()
 
