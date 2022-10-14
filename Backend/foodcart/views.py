@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from shopcart.models import *
+from .models import *
 from menu.models import MenuItem
 from .serializers import *
 
@@ -21,23 +21,22 @@ class CartView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        data = request.data
         user = request.user
+        data = request.data
         cart, _ = Cart.objects.get_or_create(user=user, ordered=False)
-        item = MenuItem.objects.get(id=data.get('item'))
-        price = item.price
+        product = MenuItem.objects.get(id=data.get('product'))
+        price = product.price
         quantity = data.get('quantity')
-        cart_items = CartItems(cart=cart, user=user, item=item, price=price, quantity=quantity)
+        cart_items = CartItems(cart=cart, user=user, product=product, price=price, quantity=quantity)
         cart_items.save()
 
         total_price = 0
         cart_items = CartItems.objects.filter(user=user, cart=cart.id)
-        for elements in cart_items:
-            total_price += elements.price
+        for items in cart_items:
+            total_price += items.price
         cart.total_price = total_price
         cart.save()
-
-        return Response({'success': 'Item Added to your cart'})
+        return Response({'success': 'Item add to your cart'})
 
     def put(self, request):
         data = request.data
@@ -45,7 +44,7 @@ class CartView(APIView):
         quantity = data.get('quantity')
         cart_item.quantity += quantity
         cart_item.save()
-        return Response({'Success': 'Item Updated'})
+        return Response({'success': 'Item Updated'})
 
     def delete(self, request):
         user = request.user
@@ -56,3 +55,4 @@ class CartView(APIView):
         queryset = CartItems.objects.filter(cart=cart)
         serializer = CartItemSerializer(queryset, many=True)
         return Response(serializer.data)
+

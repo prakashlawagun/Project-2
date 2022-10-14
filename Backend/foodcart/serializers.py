@@ -11,7 +11,7 @@ class CartSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     cart = CartSerializer()
-    item = MenuItemSerializer()
+    product = MenuItemSerializer()
 
     class Meta:
         model = CartItems
