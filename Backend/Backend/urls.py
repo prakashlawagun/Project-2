@@ -9,6 +9,7 @@ urlpatterns = [
     path('api/menu/',include('menu.urls')),
     path('api/notification/',include('notification.urls')),
     path('api/',include('foodcart.urls')),
+    path('api/',include('order_i.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,document_root = settings.MEDIA_ROOT)

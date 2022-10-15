@@ -40,10 +40,18 @@ class CartView(APIView):
 
     def put(self, request):
         data = request.data
+        user = request.user
+        cart, _ = Cart.objects.get_or_create(user=user, ordered=False)
         cart_item = CartItems.objects.get(id=data.get('id'))
         quantity = data.get('quantity')
         cart_item.quantity += quantity
         cart_item.save()
+        total_price = 0
+        cart_items = CartItems.objects.filter(user=user, cart=cart.id)
+        for items in cart_items:
+            total_price += items.price
+        cart.total_price = total_price
+        cart.save()
         return Response({'success': 'Item Updated'})
 
     def delete(self, request):
