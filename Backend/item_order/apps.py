@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class OrderIConfig(AppConfig):
+class ItemOrderConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'order_i'
+    name = 'item_order'
