@@ -10,7 +10,7 @@ from django.dispatch import receiver
 # Create your models here.
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)
     total_price = models.FloatField(default=0)
 
@@ -20,8 +20,7 @@ class Cart(models.Model):
 
 class CartItems(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
+    product = models.ForeignKey(MenuItem,on_delete=models.CASCADE)
     price = models.FloatField(default=0)
     quantity = models.IntegerField(default=1)
 

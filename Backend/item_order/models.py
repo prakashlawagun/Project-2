@@ -18,23 +18,22 @@ ORDER_STATUS = (
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    product = models.CharField(max_length=100)
     shipping_address = models.CharField(max_length=200)
     mobile = models.PositiveIntegerField()
     email = models.EmailField(null=True, blank=True)
     total = models.PositiveIntegerField()
     order_status = models.CharField(max_length=50, choices=ORDER_STATUS)
     created_at = models.DateTimeField(auto_now_add=True)
+    pin = models.IntegerField()
 
     def __str__(self):
-        return str(self.user.username)+" "+"order"+str(self.id)
+        return str(self.user.username) + " " + "order" + str(self.id)
 
 
 class OrderItem(models.Model):
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(MenuItem, on_delete=models.CASCADE)
-    price = models.FloatField(default=0)
-    quantity = models.IntegerField(default=1)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.user.username)+" "+"Order Item"
+        return str(self.user.username) + " " + "Order Item"

@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticated
 from .models import *
 from menu.models import MenuItem
 from .serializers import *
-from item_order.models import OrderItem
 
 
 # Create your views here.
@@ -30,8 +29,7 @@ class CartView(APIView):
         quantity = data.get('quantity')
         cart_items = CartItems(cart=cart, user=user, product=product, price=price, quantity=quantity)
         cart_items.save()
-        order_items = OrderItem(cart=cart, user=user, product=product, price=price, quantity=quantity)
-        order_items.save()
+
 
 
         total_price = 0

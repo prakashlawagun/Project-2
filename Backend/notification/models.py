@@ -1,12 +1,13 @@
 from django.db import models
 from account.models import User
+from ckeditor.fields import RichTextField
 
 
 # Create your models here.
 
 class Notification(models.Model):
     title = models.CharField(max_length=100)
-    message = models.TextField()
+    message = RichTextField()
 
     def __str__(self):
         return self.title

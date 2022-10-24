@@ -7,6 +7,6 @@ router.register('menu',views.MenuItemAPIView,basename="menu")
 router.register('category',views.MealCategoryAPIView,basename="category")
 
 urlpatterns = [
-  path('items/',include(router.urls)),
+  path('',include(router.urls)),
   path('search/',views.search_food.as_view()),
 ]
