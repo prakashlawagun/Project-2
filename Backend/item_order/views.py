@@ -9,8 +9,6 @@ from foodcart.serializers import CartItemSerializer
 from account.utils import Util
 from .serializers import OrderItemSerializer
 
-
-# Create your views here.
 class OrderCreateView(APIView):
     permission_classes = [IsAuthenticated]
 

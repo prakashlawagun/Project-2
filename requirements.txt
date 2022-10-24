@@ -1,0 +1,11 @@
+Django==4.0
+django-ckeditor==6.5.1
+django-cors-headers==3.13.0
+django-extensions==3.2.1
+django-filter==22.1
+django-rest-framework==0.1.0
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.2.2
+Pillow==9.2.0
+python-decouple==3.6
+yaspin==2.2.0
