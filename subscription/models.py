@@ -41,6 +41,10 @@ class Subscription(models.Model):
     def is_active(self):
         return self.end_date > datetime.now().date()
 
+    @classmethod
+    def create_subscription(cls, user, period):
+        return cls.objects.create(user=user, period=period)
+
     def save(self, *args, **kwargs):
         if self.start_date is None:
             self.start_date = datetime.now()
