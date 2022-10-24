@@ -13,6 +13,7 @@ class ProfileAdmin(admin.ModelAdmin):
 class SubscriptionAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'start_date', 'end_date', 'period')
     list_filter = ('user', 'start_date', 'end_date')
+    readonly_fields = ('end_date',)
 
 
 @admin.register(SubscriptionMealGroup)

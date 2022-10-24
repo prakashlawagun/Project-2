@@ -39,7 +39,7 @@ class Subscription(models.Model):
 
     @property
     def is_active(self):
-        return self.end_date > datetime.now()
+        return self.end_date > datetime.now().date()
 
     def save(self, *args, **kwargs):
         if self.start_date is None:
