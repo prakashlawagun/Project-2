@@ -1,12 +1,17 @@
-from rest_framework import serializers
-from .models import Packages
+from rest_framework.serializers import ModelSerializer
+
+from menu.serializers import MealGroupSerializer
+from .models import SubscriptionMealGroup
 
 
-class PackageSerializer(serializers.ModelSerializer):
+class SubscriptionMealGroupSerializer(ModelSerializer):
+    meal_group = MealGroupSerializer()
+
+    def to_representation(self, instance: SubscriptionMealGroup):
+        data = super().to_representation(instance)
+        data['name'] = instance.meal_group.name
+        return data
+
     class Meta:
-        model = Packages
-        fields = '__all__'
-
-
-
-
+        model = SubscriptionMealGroup
+        fields = ['meal_group', ]

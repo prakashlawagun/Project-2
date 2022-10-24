@@ -1,10 +1,13 @@
-from django.urls import path,include
-from subscription import views
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
+from .views import SubscriptionMealViewSet
+
+app_name = 'subscription'
+
 router = DefaultRouter()
-router.register('packages',views.PackageAPIView,basename="package")
+router.register('', SubscriptionMealViewSet, basename='subscription')
 
 urlpatterns = [
-  path('',include(router.urls)),
+    path('', include(router.urls)),
 ]

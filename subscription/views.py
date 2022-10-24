@@ -1,16 +1,18 @@
-from django.shortcuts import render
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from subscription.serializers import *
-from subscription.models import *
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ReadOnlyModelViewSet
+
+from .models import SubscriptionMealGroup
+from .serializers import SubscriptionMealGroupSerializer
 
 
-# Create your views here.
-class PackageAPIView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
-    queryset = Packages.objects.all()
-    serializer_class = PackageSerializer
+class SubscriptionMealViewSet(ReadOnlyModelViewSet):
+    serializer_class = SubscriptionMealGroupSerializer
+    queryset = SubscriptionMealGroup.objects.all()
 
-
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response({
+            'message': 'Subscription Meal List fetched successfully',
+            'data': serializer.data,
+        })

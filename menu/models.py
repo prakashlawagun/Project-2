@@ -1,8 +1,7 @@
-from django.db import models
-from django.dispatch import receiver
-from account.models import User
-from django.db.models.signals import pre_save, post_save
 from ckeditor.fields import RichTextField
+from django.db import models
+
+from account.models import User
 
 
 class MealCategory(models.Model):
@@ -26,5 +25,9 @@ class MenuItem(models.Model):
         return self.name
 
 
+class MealGroup(models.Model):
+    name = models.CharField(max_length=100)
+    menu_items = models.ManyToManyField(MenuItem, related_name="meal_group")
 
-
+    def __str__(self):
+        return self.name
