@@ -5,7 +5,7 @@ import shutil
 
 
 def clean():
-    for root, dirs, files in os.walk("Backend"):
+    for root, dirs, files in os.walk("sadf"):
         for directory in dirs:
             if directory == "__pycache__":
                 os.system(f'git rm -r {os.path.join(root, directory)} -f')

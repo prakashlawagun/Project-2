@@ -7,7 +7,7 @@
 *.pyc
 __pycache__/
 local_settings.py
-Backend/db.sqlite3
+db.sqlite3
 db.sqlite3-journal
 media
 
@@ -172,3 +172,4 @@ cython_debug/
 
 # End of https://www.toptal.com/developers/gitignore/api/django
 migrations/
+media/
