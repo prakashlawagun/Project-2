@@ -18,7 +18,7 @@ class MenuItem(models.Model):
     photo = models.ImageField(upload_to='items', null=True)
     category = models.ForeignKey(MealCategory, on_delete=models.CASCADE, related_name="menu")
     description = RichTextField()
-    calories = models.IntegerField(max_length=100)
+    calories = models.IntegerField()
     price = models.FloatField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
 

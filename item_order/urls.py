@@ -1,9 +1,13 @@
-from django.urls import path
-from .views import *
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import OrderViewSet, CancelOrderViewSet
+
+app_name = 'item_order'
+
+router = DefaultRouter()
+router.register('', OrderViewSet, basename='order')
+router.register('cancel', CancelOrderViewSet, basename='cancel_order')
 
 urlpatterns = [
-    path('orders/',OrderCreateView.as_view()),
-    path('orders/<int:pk>/',OrderCreateView.as_view()),
-    path('order-cancel/<int:pk>/',OrderCancel.as_view()),
-
+    path('', include(router.urls)),
 ]
