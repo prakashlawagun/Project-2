@@ -1,7 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 
 from menu.serializers import MealGroupSerializer
-from .models import SubscriptionMealGroup
+from .models import SubscriptionMealGroup, Subscription
 
 
 class SubscriptionMealGroupSerializer(ModelSerializer):
@@ -15,3 +15,11 @@ class SubscriptionMealGroupSerializer(ModelSerializer):
     class Meta:
         model = SubscriptionMealGroup
         fields = ['meal_group', ]
+
+
+class SubscriptionSerializer(ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = ['period','amount']
+
+

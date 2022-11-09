@@ -8,6 +8,7 @@ app_name = 'subscription'
 router = DefaultRouter()
 router.register('', SubscriptionMealViewSet, basename='subscription')
 
+
 urlpatterns = [
     path('', include(router.urls)),
 ]

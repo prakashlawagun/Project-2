@@ -38,6 +38,7 @@ LOCAL_APPS = [
     'account',
     'menu',
     'notification',
+    'contact'
 ]
 
 LAST_APPS = [
@@ -125,8 +126,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
     ),
     'DEFAULT_THROTTLE_RATES': {
         'stop': '5/hour'
@@ -153,6 +154,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -188,6 +191,7 @@ PASSWORD_RESET_TIMEOUT = 900
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://127.0.0.1:3000",
 ]
 
 BATON = {
@@ -205,3 +209,4 @@ BATON = {
     'MESSAGES_TOASTS': False,
     'GRAVATAR_DEFAULT_IMG': 'retro',
 }
+

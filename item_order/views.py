@@ -1,9 +1,10 @@
+from django.shortcuts import redirect
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
-
 from foodcart.models import Cart, CartItems
 from .models import Order, OrderItem
 from .serializers import OrderSerializer
+from account.utils import Util
 
 
 class OrderViewSet(ModelViewSet):
@@ -54,6 +55,13 @@ class OrderViewSet(ModelViewSet):
             # Adding the price of each item in the cart to the total price of the order.
             order.total += cart_item.price
             order.save()
+
+            # data = {
+            #     'subject': 'Order details',
+            #     'body': f'Item |{cart_item.product } , Total={order.total}',
+            #     'to_email': request.user.email
+            # }
+            # Util.send_email(data)
             cart_item.delete()
 
         return Response({

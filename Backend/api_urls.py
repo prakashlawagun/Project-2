@@ -7,4 +7,5 @@ urlpatterns = [
     path('order/', include('item_order.urls')),
     path('subscription/', include('subscription.urls')),
     path('menu/', include('menu.urls')),
+    path('contact/', include('contact.urls')),
 ]

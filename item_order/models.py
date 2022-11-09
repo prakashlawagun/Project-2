@@ -1,8 +1,8 @@
 from django.db import models
-
 from account.models import User
 from foodcart.models import Cart, CartItems
 from menu.models import MenuItem
+
 
 
 class Order(models.Model):

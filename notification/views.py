@@ -14,16 +14,14 @@ class SendUserNotification(ModelViewSet):
     queryset = UserNotification.objects.all()
     serializer_class = UserNotificationSerializer
 
+    def perform_update(self, serializer):
+        serializer.save()
 
-class ChangeStatusView(APIView):
-    def put(self,request,pk=None,format=None):
-        id = pk
-        notify = UserNotification.objects.get(id=id)
-        serializer = UserNotificationSerializer(notify,data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            if notify.user == request.user:
-                notify.seen_by = True
-                notify.save()
-            return Response({'msg':'Done'},status=status.HTTP_200_OK)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
 

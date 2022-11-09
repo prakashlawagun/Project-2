@@ -1,7 +1,6 @@
-from django.contrib.auth import get_user_model
+from account.models import User
 from yaspin import yaspin
 
-User = get_user_model()
 
 ADDRESS = 'Kathmandu'
 TERMS_AND_CONDITIONS = True

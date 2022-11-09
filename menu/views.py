@@ -1,45 +1,28 @@
 from django.shortcuts import render
 from menu.serializers import MealCategorySerializer, MenuItemSerializer
-from menu.models import MealCategory, MenuItem
+from menu.models import MealCategory, MenuItem, MealGroup
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import generics
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.response import Response
 
 
 # Create your views here.
 class MealCategoryAPIView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
     queryset = MealCategory.objects.all()
     serializer_class = MealCategorySerializer
 
 
 class MenuItemAPIView(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
     queryset = MenuItem.objects.all()
     serializer_class = MenuItemSerializer
 
 
-class search_food(generics.ListAPIView):
-    queryset = MenuItem.objects.all()
+class SearchViewSet(viewsets.ModelViewSet):
     serializer_class = MenuItemSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['calories']
+    queryset = MenuItem.objects.all()
 
-
-
-
-# class MealCategoryAPIView(APIView):
-#     permission_classes = [IsAuthenticated]
-#
-#     def get(self, request):
-#         category = MealCategory.objects.all()
-#         serializer = MealCategorySerializer(category, many=True)
-#         data = serializer.data
-#         return Response(data)
-#
-#
-# class MenuItemAPIView(APIView):
-#     permission_classes = [IsAuthenticated]
-#
-#     def post(self,request,format=None):
+    def retrieve(self, request, *args, **kwargs):
+        item = MenuItem.objects.filter(
+            calories__range=(100,200),
+        ).order_by('calories')
+        serializer = MenuItemSerializer(item, many=True)
+        return Response(serializer.data)

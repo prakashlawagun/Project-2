@@ -1,19 +1,16 @@
 from datetime import datetime, timedelta
-
-from django.contrib.auth import get_user_model
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from account.models import User
 from menu.models import MealGroup
-
-User = get_user_model()
 
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, null=True)
     dob = models.DateField(blank=True, null=True)
+    is_preminum = models.BooleanField(default=False)
 
 
 @receiver(post_save, sender=User)
@@ -30,9 +27,10 @@ class Subscription(models.Model):
         YEARLY = 'Yearly', 'Yearly'
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    start_date = models.DateField(blank=True, null=True)
+    start_date = models.DateField(default=datetime.now)
     end_date = models.DateField(blank=True, null=True)
     period = models.CharField(max_length=10, choices=Period.choices, default=Period.WEEKLY)
+    amount = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.user}"

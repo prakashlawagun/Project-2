@@ -5,8 +5,8 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register('menu',views.MenuItemAPIView,basename="menu")
 router.register('category',views.MealCategoryAPIView,basename="category")
+router.register('search',views.SearchViewSet,basename="search")
 
 urlpatterns = [
-  path('search/',views.search_food.as_view()),
   path('',include(router.urls)),
 ]

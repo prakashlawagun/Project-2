@@ -9,12 +9,9 @@ from menu.models import MenuItem, MealCategory
 PRODUCT_CSV_PATH = Path(__file__).parent.parent.parent / 'products.csv'
 
 CATEGORIES = [
-    'Burgers',
-    'Pizzas',
-    'Drinks',
-    'Desserts',
-    'Sides',
-    'Salads',
+    'Breakfast',
+    'lunch',
+    'Dinner',
 ]
 
 

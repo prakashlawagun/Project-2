@@ -1,9 +1,7 @@
-from django.contrib.auth import get_user_model
+from account.models import User
 from django.db import models
 
 from menu.models import MenuItem
-
-User = get_user_model()
 
 
 class Cart(models.Model):

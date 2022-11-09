@@ -24,11 +24,11 @@ def restart():
 
     APPS_LIST_STR = ' '.join(LOCAL_APPS)
 
-    os.system(f'python manage.py makemigrations {APPS_LIST_STR}')
-    os.system('python manage.py migrate')
-    os.system('python manage.py runscript seed')
+    os.system(f'python3 manage.py makemigrations {APPS_LIST_STR}')
+    os.system('python3 manage.py migrate')
+    os.system('python3 manage.py runscript seed')
     print('Restarted successfully!')
-    os.system('python manage.py runserver 0.0.0.0:8000')
+    os.system('python3 manage.py runserver 127.0.0.1:8000 ')
 
 
 if __name__ == '__main__':
