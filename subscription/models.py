@@ -7,10 +7,13 @@ from menu.models import MealGroup
 
 
 class Profile(models.Model):
+    class Membership(models.TextChoices):
+        PREMINUM = 'PREMINUM', 'PREMINUM'
+        FREE= 'FREE', 'FREE'
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(blank=True, null=True)
     dob = models.DateField(blank=True, null=True)
-    is_preminum = models.BooleanField(default=False)
+    is_preminum = models.CharField(max_length=10, choices=Membership.choices, default=Membership.FREE)
 
 
 @receiver(post_save, sender=User)

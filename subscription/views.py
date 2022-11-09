@@ -55,7 +55,7 @@ class SubscriptionMealViewSet(ReadOnlyModelViewSet):
                 new_sub.amount = 20000
                 new_sub.save()
             profile, _ = Profile.objects.get_or_create(user=request.user)
-            profile.is_preminum = True
+            profile.is_preminum = "PREMINUM"
             profile.save()
         else:
             return Response({
