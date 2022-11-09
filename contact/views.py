@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from .models import Contact, Reply
-from .serializers import ContactSerializer, ReplySerializer
+from .models import Contact, Reply, Profile
+from .serializers import ContactSerializer, ReplySerializer, ProfileSerializer
 from account.utils import Util
+from subscription.models import Subscription
+from subscription.serializers import SubscriptionSerializer
 
 
 # Create your views here.
@@ -34,3 +36,13 @@ class ReplyViewSet(ModelViewSet):
             'msg': "Reply sent",
             'data': serializer.data
         })
+
+
+class ProfileViewSet(ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+
+
+class SubscriptionViewSet(ModelViewSet):
+    queryset = Subscription.objects.all()
+    serializer_class = SubscriptionSerializer

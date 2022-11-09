@@ -20,6 +20,6 @@ class SubscriptionMealGroupSerializer(ModelSerializer):
 class SubscriptionSerializer(ModelSerializer):
     class Meta:
         model = Subscription
-        fields = ['period','amount']
+        fields = ['start_date','end_date','period', 'amount']
 
 

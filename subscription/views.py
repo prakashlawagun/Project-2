@@ -1,8 +1,9 @@
 from rest_framework.response import Response
-from rest_framework.viewsets import ReadOnlyModelViewSet
-from .models import SubscriptionMealGroup, Subscription, Profile
+from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
+from .models import SubscriptionMealGroup, Subscription
 from .serializers import SubscriptionMealGroupSerializer, SubscriptionSerializer
 from rest_framework.permissions import SAFE_METHODS
+from contact.models import Profile
 
 
 class SubscriptionMealViewSet(ReadOnlyModelViewSet):
@@ -42,7 +43,7 @@ class SubscriptionMealViewSet(ReadOnlyModelViewSet):
             new_sub = Subscription.objects.create(
                 user=request.user,
                 period=serializer.validated_data['period'],
-                amount = 0
+                amount=0
             )
             new_sub.save()
             if new_sub.period == "Weekly":
@@ -65,3 +66,6 @@ class SubscriptionMealViewSet(ReadOnlyModelViewSet):
             'message': 'Subscription Created',
             'data': serializer.data,
         })
+
+
+

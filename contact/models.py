@@ -3,9 +3,29 @@ from ckeditor.fields import RichTextField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from account.utils import Util
+from account.models import User
 
 
 # Create your models here.
+
+class Profile(models.Model):
+    class Membership(models.TextChoices):
+        PREMINUM = 'PREMINUM', 'PREMINUM'
+        FREE = 'FREE', 'FREE'
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True, null=True)
+    dob = models.DateField(blank=True, null=True)
+    is_preminum = models.CharField(max_length=10, choices=Membership.choices, default=Membership.FREE)
+
+
+@receiver(post_save, sender=User)
+def create_save_profile(sender, created, instance, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+    instance.profile.save()
+
+
 class Contact(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
@@ -25,7 +45,7 @@ class Reply(models.Model):
 
 
 @receiver(post_save, sender=Reply)
-def send_reply(sender,**kwargs):
+def send_reply(sender, **kwargs):
     rply_id = kwargs['instance']
     data = {
         'subject': 'Meal Time Family',

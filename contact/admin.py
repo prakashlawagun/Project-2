@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Contact, Reply
+from .models import Contact, Reply,Profile
 
 
 # Register your models here.
@@ -11,3 +11,9 @@ class ContactAdmin(admin.ModelAdmin):
 @admin.register(Reply)
 class ContactAdmin(admin.ModelAdmin):
     list_display = ['contact','msg']
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'bio', 'dob', 'is_preminum')
+    list_editable = ['is_preminum']
+    list_filter = ('user', 'dob')

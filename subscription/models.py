@@ -1,26 +1,7 @@
 from datetime import datetime, timedelta
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from account.models import User
 from menu.models import MealGroup
-
-
-class Profile(models.Model):
-    class Membership(models.TextChoices):
-        PREMINUM = 'PREMINUM', 'PREMINUM'
-        FREE= 'FREE', 'FREE'
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(blank=True, null=True)
-    dob = models.DateField(blank=True, null=True)
-    is_preminum = models.CharField(max_length=10, choices=Membership.choices, default=Membership.FREE)
-
-
-@receiver(post_save, sender=User)
-def create_save_profile(sender, created, instance, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-    instance.profile.save()
 
 
 class Subscription(models.Model):
